@@ -5,6 +5,7 @@
       "@configs/*": ["src/configs/*"],
       "@resolvers/*": ["src/resolvers/*"],
       "@services/*": ["src/services/*"],
+      "@models/*": ["src/models/*"],
       "@/*": ["src/*"]
     },
   }
