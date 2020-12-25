@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@configs/*": ["src/configs/*"],
+      "@resolvers/*": ["src/resolvers/*"],
+      "@services/*": ["src/services/*"],
+      "@/*": ["src/*"]
+    },
+  }
+}

@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { PubSub } from 'apollo-server-express';
-import { PUB_SUB } from './common.constants';
+import { PUB_SUB } from './config.constants';
 
 const pubsub = new PubSub();
 
@@ -14,4 +14,4 @@ const pubsub = new PubSub();
   ],
   exports: [PUB_SUB],
 })
-export class CommonModule {}
+export class PubsubModule {}

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { CommonModule } from './common/common.module';
+
+import { PubsubModule } from '@configs/pubsub.module';
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -10,7 +11,7 @@ const prod = process.env.NODE_ENV === 'production';
       playground: !prod,
       installSubscriptionHandlers: true,
     }),
-    CommonModule,
+    PubsubModule,
   ],
 })
 export class AppModule {}
