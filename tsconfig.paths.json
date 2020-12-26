@@ -3,9 +3,9 @@
     "baseUrl": ".",
     "paths": {
       "@configs/*": ["src/configs/*"],
-      "@resolvers/*": ["src/resolvers/*"],
-      "@services/*": ["src/services/*"],
       "@models/*": ["src/models/*"],
+      "@user/*": ["src/user/*"],
+      "@utils/*": ["src/utils/*"],
       "@/*": ["src/*"]
     },
   }
