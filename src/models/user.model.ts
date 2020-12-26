@@ -29,7 +29,7 @@ export class User {
   @Prop()
   profile?: string;
 
-  @Prop({ required: true })
+  @Prop()
   payment?: Payment;
 
   @Prop()

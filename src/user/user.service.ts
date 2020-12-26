@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { User, UserDocument, UserType } from '@models/user.model';
-import { PaymentInfo } from '@/graphql';
+import { DriverInfo, PaymentInfo } from '@/graphql';
 import { encryptPassword } from '@utils/bcrypt';
 
 @Injectable()
@@ -27,5 +27,24 @@ export class UserService {
     });
 
     return createdUser.save();
+  }
+
+  async createDriver(
+    name: string,
+    email: string,
+    password: string,
+    phone: string,
+    driver: DriverInfo,
+  ) {
+    const createDriver = new this.userModel({
+      name,
+      email,
+      password: encryptPassword(password),
+      phone,
+      driver,
+      type: UserType.driver,
+    });
+
+    return createDriver.save();
   }
 }
