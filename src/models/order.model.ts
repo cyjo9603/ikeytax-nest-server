@@ -3,6 +3,7 @@ import { Document, Types } from 'mongoose';
 import { Payment } from './payment.model';
 import { Location } from './location.model';
 import { Chat } from './chat.model';
+import { User } from './user.model';
 
 enum OrderStatus {
   waiting = 'waiting',
@@ -13,11 +14,11 @@ enum OrderStatus {
 
 @Schema({ timestamps: true })
 export class Order {
-  @Prop({ required: true })
-  user: Types.ObjectId;
+  @Prop({ required: true, type: Types.ObjectId })
+  user: User;
 
-  @Prop({ required: true, ref: 'User' })
-  driver: Types.ObjectId;
+  @Prop({ required: true, ref: 'User', type: Types.ObjectId })
+  driver: User;
 
   @Prop()
   amount?: number;

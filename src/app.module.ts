@@ -4,9 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
 import { PubsubModule } from '@configs/pubsub.module';
-import { HelloModule } from '@resolvers/hello/hello.module';
-import { UserSchema, User } from '@models/user.model';
-import { OrderSchema, Order } from '@models/order.model';
+import { UserModule } from './user/user.module';
+import { join } from 'path';
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -19,17 +18,18 @@ const prod = process.env.NODE_ENV === 'production';
       useUnifiedTopology: true,
       useFindAndModify: false,
     }),
-    MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-      { name: Order.name, schema: OrderSchema },
-    ]),
     GraphQLModule.forRoot({
       playground: !prod,
       installSubscriptionHandlers: true,
-      autoSchemaFile: true,
+      // autoSchemaFile: true,
+      typePaths: ['./**/*.graphql'],
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+        outputAs: 'class',
+      },
     }),
     PubsubModule,
-    HelloModule,
+    UserModule,
   ],
 })
 export class AppModule {}
