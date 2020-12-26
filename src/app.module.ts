@@ -13,7 +13,12 @@ const prod = process.env.NODE_ENV === 'production';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.DB_CONFIG),
+    MongooseModule.forRoot(process.env.DB_CONFIG, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    }),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Order.name, schema: OrderSchema },
