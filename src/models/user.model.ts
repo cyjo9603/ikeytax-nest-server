@@ -4,7 +4,7 @@ import { Payment } from './payment.model';
 import { Driver } from './driver.model';
 import { Location } from './location.model';
 
-enum UserType {
+export enum UserType {
   user = 'user',
   driver = 'driver',
 }

@@ -1,0 +1,8 @@
+type SignupResponse {
+  result: String!
+  error: String
+}
+
+type Query {
+  hello: String
+}
