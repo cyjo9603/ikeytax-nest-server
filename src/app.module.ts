@@ -21,7 +21,6 @@ const prod = process.env.NODE_ENV === 'production';
     GraphQLModule.forRoot({
       playground: !prod,
       installSubscriptionHandlers: true,
-      // autoSchemaFile: true,
       typePaths: ['./**/*.graphql'],
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
