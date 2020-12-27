@@ -27,6 +27,11 @@ const prod = process.env.NODE_ENV === 'production';
         path: join(process.cwd(), 'src/graphql.ts'),
         outputAs: 'class',
       },
+      cors: {
+        credentials: true,
+        origin: prod ? /ikeytax\.tk$/ : 'http://localhost:3000',
+      },
+      context: (ctx) => ({ ...ctx }),
     }),
     PubsubModule,
     UserModule,
