@@ -8,6 +8,7 @@ import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { AuthService } from '@/auth/auth.service';
 import { Response } from 'express';
+import { OrderService } from '@/order/order.service';
 
 const EXPIRED = 1000 * 60 * 60 * 24 * 14;
 
@@ -16,6 +17,7 @@ export class UserResolver {
   constructor(
     private userService: UserService,
     @Inject(forwardRef(() => AuthService)) private authService: AuthService,
+    private orderService: OrderService,
   ) {}
 
   @Mutation((returns) => SignupResponse)
@@ -59,7 +61,8 @@ export class UserResolver {
   @Query('getUserWithOrder')
   async getUserWithOrder(@CurrentUser() user) {
     const _user = await this.userService.findOneById(user.id);
+    const order = await this.orderService.findRecentlyOneForUser(user.id, user.type);
 
-    return { result: 'success', user: _user };
+    return { result: 'success', user: _user, order };
   }
 }

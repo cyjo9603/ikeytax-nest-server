@@ -5,6 +5,7 @@ import { User, UserSchema } from '@models/user.model';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { AuthModule } from '@/auth/auth.module';
+import { OrderModule } from '@/order/order.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from '@/auth/auth.module';
       },
     ]),
     forwardRef(() => AuthModule),
+    OrderModule,
   ],
 
   providers: [UserResolver, UserService],

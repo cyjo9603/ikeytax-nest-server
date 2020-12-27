@@ -7,6 +7,7 @@ import { PubsubModule } from '@configs/pubsub.module';
 import { UserModule } from './user/user.module';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { OrderModule } from './order/order.module';
 
 const prod = process.env.NODE_ENV === 'production';
 
@@ -36,6 +37,7 @@ const prod = process.env.NODE_ENV === 'production';
     PubsubModule,
     UserModule,
     AuthModule,
+    OrderModule,
   ],
 })
 export class AppModule {}
