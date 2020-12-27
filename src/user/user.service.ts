@@ -53,4 +53,10 @@ export class UserService {
 
     return user;
   }
+
+  async findOneById(userId): Promise<UserDocument | undefined> {
+    const user = await this.userModel.findById(userId);
+
+    return user;
+  }
 }

@@ -19,11 +19,11 @@ export class AuthService {
     const user = await this.userService.findOne(email, loginType);
     if (!user || !isComparedPassword(password, user.password)) return null;
 
-    return { id: user._id };
+    return { id: user._id, type: user.type };
   }
 
   async login(user) {
-    const payload = { id: user.id };
+    const payload = { id: user.id, type: user.type };
     const accessToken = this.jwtService.sign(payload, { expiresIn: '15m' });
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '14d' });
 

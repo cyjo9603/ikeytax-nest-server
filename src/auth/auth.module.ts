@@ -7,6 +7,7 @@ import { User, UserSchema } from '@models/user.model';
 import { UserModule } from '@user/user.module';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './strategies/local.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { jwtConstants } from './constants';
 
 @Module({
@@ -23,7 +24,7 @@ import { jwtConstants } from './constants';
       secret: jwtConstants.secret,
     }),
   ],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

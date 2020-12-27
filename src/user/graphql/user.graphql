@@ -3,11 +3,36 @@ enum UserType {
   driver
 }
 
+enum CarType {
+  small
+  middle
+  large
+}
+
+type Car {
+  carNumber: String!
+  carType: CarType!
+}
+
+type Driver {
+  licenseNumber: String!
+  status: String!
+  car: Car!
+}
+
+type User {
+  _id: String!
+  name: String!
+  email: String!
+  phone: String!
+  type: UserType!
+  profile: String
+  payment: Payment
+  driver: Driver
+  location: Location
+}
+
 type SignupResponse {
   result: String!
   error: String
-}
-
-type Query {
-  hello: String
 }

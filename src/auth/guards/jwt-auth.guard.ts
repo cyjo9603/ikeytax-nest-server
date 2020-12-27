@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
-export class LocalAuthGuard extends AuthGuard('local') {
+export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor() {
     super();
   }
@@ -11,7 +11,12 @@ export class LocalAuthGuard extends AuthGuard('local') {
   getRequest(context: ExecutionContext) {
     const gqlCtx = GqlExecutionContext.create(context);
     const ctx = gqlCtx.getContext();
-    ctx.req.body = gqlCtx.getArgs();
+    const authCookie = ctx.req.cookies[process.env.JWT_HEADER];
+
+    if (authCookie) {
+      ctx.req.headers.authorization = `Bearer ${authCookie}`;
+    }
+
     return ctx.req;
   }
 }

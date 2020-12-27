@@ -1,0 +1,6 @@
+enum OrderStatus {
+  waiting
+  approval
+  startedDrive
+  close
+}

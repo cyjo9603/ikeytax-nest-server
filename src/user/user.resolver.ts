@@ -1,10 +1,11 @@
 import { forwardRef, Inject, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver, Context } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Context, Query } from '@nestjs/graphql';
 
 import { SignupResponse, PaymentInfo, DriverInfo, SigninResponse } from '@/graphql';
 import { UserService } from './user.service';
 import { CurrentUser } from './decorators/currentUser';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { AuthService } from '@/auth/auth.service';
 import { Response } from 'express';
 
@@ -46,11 +47,19 @@ export class UserResolver {
   @UseGuards(LocalAuthGuard)
   @Mutation(() => SigninResponse)
   async signin(@CurrentUser() user, @Context() { res }: { res: Response }) {
-    const accessToken = await this.authService.login(user);
+    const { accessToken } = await this.authService.login(user);
     res.cookie(process.env.JWT_HEADER, accessToken, {
       httpOnly: true,
       maxAge: EXPIRED,
     });
     return { result: 'success' };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query('getUserWithOrder')
+  async getUserWithOrder(@CurrentUser() user) {
+    const _user = await this.userService.findOneById(user.id);
+
+    return { result: 'success', user: _user };
   }
 }
