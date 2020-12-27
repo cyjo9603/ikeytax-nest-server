@@ -6,12 +6,13 @@ import { ConfigModule } from '@nestjs/config';
 import { PubsubModule } from '@configs/pubsub.module';
 import { UserModule } from './user/user.module';
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
 
 const prod = process.env.NODE_ENV === 'production';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DB_CONFIG, {
       useNewUrlParser: true,
       useCreateIndex: true,
@@ -29,6 +30,7 @@ const prod = process.env.NODE_ENV === 'production';
     }),
     PubsubModule,
     UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

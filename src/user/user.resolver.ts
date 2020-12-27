@@ -1,10 +1,18 @@
+import { forwardRef, Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { SignupResponse, PaymentInfo, DriverInfo } from '@/graphql';
+
+import { SignupResponse, PaymentInfo, DriverInfo, SigninResponse } from '@/graphql';
 import { UserService } from './user.service';
+import { CurrentUser } from './decorators/currentUser';
+import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
+import { AuthService } from '@/auth/auth.service';
 
 @Resolver()
 export class UserResolver {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    @Inject(forwardRef(() => AuthService)) private authService: AuthService,
+  ) {}
 
   @Mutation((returns) => SignupResponse)
   async signupUser(
@@ -28,6 +36,14 @@ export class UserResolver {
     @Args('driver') driver: DriverInfo,
   ) {
     await this.userService.createDriver(name, email, password, phone, driver);
+
+    return { result: 'success' };
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Mutation(() => SigninResponse)
+  async signin(@CurrentUser() user) {
+    console.log(this.authService.login(user));
 
     return { result: 'success' };
   }

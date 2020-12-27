@@ -47,4 +47,10 @@ export class UserService {
 
     return createDriver.save();
   }
+
+  async findOne(email: string, loginType: UserType): Promise<UserDocument | undefined> {
+    const user = await this.userModel.findOne({ email, type: loginType });
+
+    return user;
+  }
 }
