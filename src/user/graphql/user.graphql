@@ -1,3 +1,8 @@
+enum UserType {
+  user
+  driver
+}
+
 type SignupResponse {
   result: String!
   error: String
