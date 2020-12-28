@@ -1,5 +1,0 @@
-enum CarType {
-  small
-  middle
-  large
-}
