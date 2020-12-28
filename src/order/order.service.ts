@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 
 import { Order, OrderDocument } from '@models/order.model';
 import { UserType } from '@models/user.model';
-import { OrderStatus } from '@/graphql';
+import { OrderStatus, LocationInfo, Payment } from '@/graphql';
 
 @Injectable()
 export class OrderService {
@@ -22,5 +22,21 @@ export class OrderService {
       .sort({ createdAt: -1 })
       .limit(1);
     return order;
+  }
+
+  async create(
+    user: string,
+    payment: Payment,
+    startingPoint: LocationInfo,
+    destination: LocationInfo,
+  ): Promise<OrderDocument> {
+    const order = new this.orderModel({
+      user,
+      startingPoint,
+      destination,
+      payment,
+      status: OrderStatus.waiting,
+    });
+    return order.save();
   }
 }
