@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { Order, OrderSchema } from '@models/order.model';
 import { OrderService } from './order.service';
+import { OrderResolver } from './order.resolver';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { OrderService } from './order.service';
       },
     ]),
   ],
-  providers: [OrderService],
+  providers: [OrderService, OrderResolver],
   exports: [OrderService],
 })
 export class OrderModule {}
