@@ -17,7 +17,7 @@ export class Order {
   @Prop({ required: true, type: Types.ObjectId })
   user: User;
 
-  @Prop({ required: true, ref: 'User', type: Types.ObjectId })
+  @Prop({ ref: 'User', type: Types.ObjectId })
   driver: User;
 
   @Prop()
