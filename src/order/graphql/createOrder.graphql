@@ -1,0 +1,9 @@
+type CreateOrderResponse {
+  result: String!
+  orderId: String
+  error: String
+}
+
+type Mutation {
+  createOrder(startingPoint: LocationInfo!, destination: LocationInfo!): CreateOrderResponse!
+}

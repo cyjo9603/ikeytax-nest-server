@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { Order, OrderSchema } from '@models/order.model';
 import { OrderService } from './order.service';
 import { OrderResolver } from './order.resolver';
+import { UserModule } from '@user/user.module';
 
 @Module({
   imports: [
@@ -13,8 +14,9 @@ import { OrderResolver } from './order.resolver';
         schema: OrderSchema,
       },
     ]),
+    forwardRef(() => UserModule),
   ],
-  providers: [OrderService, OrderResolver],
+  providers: [OrderResolver, OrderService],
   exports: [OrderService],
 })
 export class OrderModule {}
