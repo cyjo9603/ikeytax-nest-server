@@ -4,10 +4,15 @@ import { PubSub } from 'apollo-server-express';
 
 import { OrderService } from './order.service';
 import { CurrentUser } from '@user/decorators/currentUser';
-import { LocationInfo, CreateOrderResponse, SubNewOrderResponse } from '@/graphql';
+import {
+  LocationInfo,
+  CreateOrderResponse,
+  SubNewOrderResponse,
+  UpdateOrderListResponse,
+} from '@/graphql';
 import { UserService } from '@user/user.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { PUB_SUB, CREATE_NEW_ORDER } from '@configs/config.constants';
+import { PUB_SUB, CREATE_NEW_ORDER, UPDATE_ORDER_LIST } from '@configs/config.constants';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
 
 const POSSIBLE_DISTANCE = 10000;
@@ -35,6 +40,7 @@ export class OrderResolver {
       destination,
     );
     this.pubsub.publish(CREATE_NEW_ORDER, { subNewOrder: { newOrder: createdOrder } });
+    this.pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
     return { result: 'success', orderId: createdOrder._id };
   }
 
@@ -50,5 +56,10 @@ export class OrderResolver {
   })
   subNewOrder() {
     return this.pubsub.asyncIterator(CREATE_NEW_ORDER);
+  }
+
+  @Subscription((returns) => UpdateOrderListResponse)
+  updateOrderList() {
+    return this.pubsub.asyncIterator(UPDATE_ORDER_LIST);
   }
 }
