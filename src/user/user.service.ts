@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument, UserType } from '@models/user.model';
 import { DriverInfo, PaymentInfo } from '@/graphql';
 import { encryptPassword } from '@utils/bcrypt';
+import { Payment } from '@models/payment.model';
 
 @Injectable()
 export class UserService {
@@ -58,5 +59,10 @@ export class UserService {
     const user = await this.userModel.findById(userId);
 
     return user;
+  }
+
+  async getPayment(userId): Promise<Payment> {
+    const user = await this.userModel.findById(userId, 'payment');
+    return user.get('payment');
   }
 }
