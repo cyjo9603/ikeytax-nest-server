@@ -13,7 +13,7 @@
 - [x] signupDriver
 - [x] signupUser
 - [ ] subLocation
-- [ ] updateDriverLocation
+- [x] updateDriverLocation
 
 #### order
 

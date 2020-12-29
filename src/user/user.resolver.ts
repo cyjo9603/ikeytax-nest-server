@@ -1,14 +1,22 @@
 import { forwardRef, Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver, Context, Query } from '@nestjs/graphql';
+import { PubSub } from 'apollo-server-express';
 
-import { SignupResponse, PaymentInfo, DriverInfo, SigninResponse } from '@/graphql';
-import { UserService } from './user.service';
-import { CurrentUser } from './decorators/currentUser';
+import {
+  SignupResponse,
+  PaymentInfo,
+  DriverInfo,
+  SigninResponse,
+  UpdateLocationResponse,
+} from '@/graphql';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { AuthService } from '@/auth/auth.service';
 import { Response } from 'express';
 import { OrderService } from '@/order/order.service';
+import { PUB_SUB, UPDATE_ORDER_LIST } from '@configs/config.constants';
+import { CurrentUser } from './decorators/currentUser';
+import { UserService } from './user.service';
 
 const EXPIRED = 1000 * 60 * 60 * 24 * 14;
 
@@ -18,6 +26,7 @@ export class UserResolver {
     private userService: UserService,
     @Inject(forwardRef(() => AuthService)) private authService: AuthService,
     private orderService: OrderService,
+    @Inject(PUB_SUB) private readonly pubsub: PubSub,
   ) {}
 
   @Mutation((returns) => SignupResponse)
@@ -64,5 +73,18 @@ export class UserResolver {
     const order = await this.orderService.findRecentlyOneForUser(user.id, user.type);
 
     return { result: 'success', user: _user, order };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => UpdateLocationResponse)
+  async updateDriverLocation(
+    @CurrentUser() user,
+    @Args('lat') lat: number,
+    @Args('lng') lng: number,
+  ) {
+    await this.userService.updateLocation(user.id, { coordinates: [lat, lng] });
+    this.pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
+
+    return { result: 'success' };
   }
 }
