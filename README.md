@@ -12,7 +12,7 @@
 - [ ] logout
 - [x] signupDriver
 - [x] signupUser
-- [ ] subLocation
+- [x] subLocation
 - [x] updateDriverLocation
 
 #### order

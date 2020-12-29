@@ -1,5 +1,5 @@
 import { forwardRef, Inject, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver, Context, Query } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Context, Query, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
 import {
@@ -8,13 +8,14 @@ import {
   DriverInfo,
   SigninResponse,
   UpdateLocationResponse,
+  LocationWithOrderId,
 } from '@/graphql';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { AuthService } from '@/auth/auth.service';
 import { Response } from 'express';
 import { OrderService } from '@/order/order.service';
-import { PUB_SUB, UPDATE_ORDER_LIST } from '@configs/config.constants';
+import { PUB_SUB, UPDATE_ORDER_LIST, UPDATE_DRIVER_LOCATION } from '@configs/config.constants';
 import { CurrentUser } from './decorators/currentUser';
 import { UserService } from './user.service';
 
@@ -85,6 +86,17 @@ export class UserResolver {
     await this.userService.updateLocation(user.id, { coordinates: [lat, lng] });
     this.pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
 
+    // TODO: approval order -> sub location
+
     return { result: 'success' };
+  }
+
+  @Subscription((returns) => LocationWithOrderId, {
+    filter: (payload, variables) => {
+      return payload.subDriverLocation.orderId === variables.orderId;
+    },
+  })
+  subDriverLocation() {
+    return this.pubsub.asyncIterator(UPDATE_DRIVER_LOCATION);
   }
 }
