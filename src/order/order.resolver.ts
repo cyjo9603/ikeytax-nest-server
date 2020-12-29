@@ -10,6 +10,7 @@ import {
   UpdateOrderListResponse,
   GetUnassignedOrdersResponse,
   SubOrderCallStatusResponse,
+  CancelOrderResponse,
 } from '@/graphql';
 import { UserService } from '@user/user.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -57,6 +58,15 @@ export class OrderResolver {
     this.pubsub.publish(CREATE_NEW_ORDER, { subNewOrder: { newOrder: createdOrder } });
     this.pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
     return { result: 'success', orderId: createdOrder._id };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation((returns) => CancelOrderResponse)
+  async cancelOrder(@CurrentUser() user, @Args('orderId') orderId: string) {
+    await this.orderService.delete(orderId, user.id);
+    this.pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
+
+    return { result: 'success' };
   }
 
   @Subscription((returns) => SubNewOrderResponse, {
