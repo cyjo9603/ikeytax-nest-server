@@ -6,6 +6,9 @@ import { Order, OrderDocument } from '@models/order.model';
 import { UserType } from '@models/user.model';
 import { OrderStatus, LocationInfo, Payment } from '@/graphql';
 
+const EARTH_RADIUS = 6378.1; // 지구 반지름
+const SEARCHING_KM = 10; // 검색 범위 (KM)
+
 @Injectable()
 export class OrderService {
   constructor(@InjectModel(Order.name) private orderModel: Model<OrderDocument>) {}
@@ -22,6 +25,20 @@ export class OrderService {
       .sort({ createdAt: -1 })
       .limit(1);
     return order;
+  }
+
+  async findUnassiendOrders(driverLocation: number[]): Promise<OrderDocument[]> {
+    const unassignedOrders = await this.orderModel
+      .find({ status: OrderStatus.waiting })
+      .where('startingPoint.coordinates')
+      .within()
+      .circle({
+        center: [driverLocation],
+        radius: SEARCHING_KM / EARTH_RADIUS,
+        spherical: true,
+      });
+
+    return unassignedOrders;
   }
 
   async create(
