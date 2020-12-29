@@ -28,7 +28,7 @@
 - [x] getUnassignedOrders
 - [ ] startDriving
 - [x] subNewOrder
-- [ ] subOrderCallStatus
+- [x] subOrderCallStatus
 - [x] updateOrderList
 
 #### token

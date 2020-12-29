@@ -9,10 +9,16 @@ import {
   SubNewOrderResponse,
   UpdateOrderListResponse,
   GetUnassignedOrdersResponse,
+  SubOrderCallStatusResponse,
 } from '@/graphql';
 import { UserService } from '@user/user.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { PUB_SUB, CREATE_NEW_ORDER, UPDATE_ORDER_LIST } from '@configs/config.constants';
+import {
+  PUB_SUB,
+  CREATE_NEW_ORDER,
+  UPDATE_ORDER_LIST,
+  ORDER_CALL_STATUS,
+} from '@configs/config.constants';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
 import { OrderService } from './order.service';
 
@@ -70,5 +76,14 @@ export class OrderResolver {
   @Subscription((returns) => UpdateOrderListResponse)
   updateOrderList() {
     return this.pubsub.asyncIterator(UPDATE_ORDER_LIST);
+  }
+
+  @Subscription((returns) => SubOrderCallStatusResponse, {
+    filter: (payload, variables) => {
+      return payload.subOrderCallStatus.orderId === variables.orderId;
+    },
+  })
+  subOrderCallStatus() {
+    return this.pubsub.asyncIterator(ORDER_CALL_STATUS);
   }
 }
