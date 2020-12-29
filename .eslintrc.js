@@ -23,5 +23,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-underscore-dangle': 'off',
     'new-cap': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'import/extensions': 'off',
   },
 };
