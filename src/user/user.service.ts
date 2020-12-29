@@ -65,4 +65,9 @@ export class UserService {
     const user = await this.userModel.findById(userId, 'payment');
     return user.get('payment');
   }
+
+  async getLocation(userId): Promise<number[]> {
+    const user = await this.userModel.findById(userId, 'location');
+    return user.get('location') || [0, 0];
+  }
 }
