@@ -1,9 +1,5 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-    sourceType: 'module',
-  },
   plugins: ['@typescript-eslint/eslint-plugin', 'prettier'],
   extends: [
     'airbnb-base',
@@ -21,5 +17,11 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'import/no-unresolved': 'off',
+    'import/prefer-default-export': 'off',
+    'no-useless-constructor': 'off',
+    'class-methods-use-this': 'off',
+    'no-underscore-dangle': 'off',
+    'new-cap': 'off',
   },
 };
