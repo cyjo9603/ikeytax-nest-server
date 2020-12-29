@@ -56,4 +56,8 @@ export class OrderService {
     });
     return order.save();
   }
+
+  async delete(orderId: string, userId) {
+    await this.orderModel.findOneAndDelete({ _id: orderId, user: userId });
+  }
 }
