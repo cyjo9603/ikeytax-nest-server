@@ -1,0 +1,14 @@
+enum OrderCallStatus {
+  approval
+  startedDrive
+  completedDrive
+}
+
+type SubOrderCallStatusResponse {
+  orderId: String!
+  status: OrderCallStatus!
+}
+
+type Subscription {
+  subOrderCallStatus(orderId: String!): SubOrderCallStatusResponse!
+}
