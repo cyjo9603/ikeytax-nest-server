@@ -6,6 +6,7 @@ import { User, UserDocument, UserType } from '@models/user.model';
 import { DriverInfo, PaymentInfo } from '@/graphql';
 import { encryptPassword } from '@utils/bcrypt';
 import { Payment } from '@models/payment.model';
+import { Location } from '@models/location.model';
 
 @Injectable()
 export class UserService {
@@ -69,5 +70,9 @@ export class UserService {
   async getLocation(userId): Promise<number[]> {
     const user = await this.userModel.findById(userId, 'location');
     return user.get('location') || [0, 0];
+  }
+
+  async updateLocation(userId: string, location: Location): Promise<void> {
+    await this.userModel.findByIdAndUpdate(userId, { location });
   }
 }
