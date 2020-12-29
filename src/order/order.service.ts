@@ -60,4 +60,8 @@ export class OrderService {
   async delete(orderId: string, userId) {
     await this.orderModel.findOneAndDelete({ _id: orderId, user: userId });
   }
+
+  async updateStatus(orderId: string, status: OrderStatus, driverId?) {
+    await this.orderModel.findByIdAndUpdate(orderId, { driver: driverId, status });
+  }
 }
