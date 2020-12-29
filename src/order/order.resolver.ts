@@ -1,19 +1,20 @@
 import { Inject, forwardRef, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Subscription, Query } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
-import { OrderService } from './order.service';
 import { CurrentUser } from '@user/decorators/currentUser';
 import {
   LocationInfo,
   CreateOrderResponse,
   SubNewOrderResponse,
   UpdateOrderListResponse,
+  GetUnassignedOrdersResponse,
 } from '@/graphql';
 import { UserService } from '@user/user.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { PUB_SUB, CREATE_NEW_ORDER, UPDATE_ORDER_LIST } from '@configs/config.constants';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
+import { OrderService } from './order.service';
 
 const POSSIBLE_DISTANCE = 10000;
 
@@ -26,7 +27,15 @@ export class OrderResolver {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Mutation(() => CreateOrderResponse)
+  @Query((returns) => GetUnassignedOrdersResponse)
+  async getUnassignedOrders(@CurrentUser() user) {
+    const userLocation = await this.userService.getLocation(user.id);
+    const unassignedOrders = await this.orderService.findUnassiendOrders(userLocation);
+    return { result: 'success', unassignedOrders };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation((returns) => CreateOrderResponse)
   async createOrder(
     @CurrentUser() user,
     @Args('startingPoint') startingPoint: LocationInfo,
