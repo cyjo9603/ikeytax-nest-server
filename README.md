@@ -17,7 +17,7 @@
 
 #### order
 
-- [ ] approvalOrder
+- [x] approvalOrder
 - [x] cancelOrder
 - [ ] completeOrder
 - [x] createOrder
