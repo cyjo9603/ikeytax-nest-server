@@ -93,4 +93,13 @@ export class OrderService {
 
     return approvalDriverOrder;
   }
+
+  async findApprovalOrderByUser(orderId, user) {
+    const order = await this.orderModel.findOne({
+      _id: orderId,
+      [user.type]: user.id,
+      status: OrderStatus.approval,
+    });
+    return order;
+  }
 }
