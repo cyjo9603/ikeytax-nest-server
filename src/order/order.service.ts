@@ -122,4 +122,11 @@ export class OrderService {
       startedAt: new Date(),
     });
   }
+
+  async findDriverLocation(orderId: string) {
+    const order = await this.orderModel.findById(orderId, 'driver').populate('driver');
+    const location = order?.get('driver.location.coordinates');
+
+    return { lat: location[0], lng: location[1] };
+  }
 }
