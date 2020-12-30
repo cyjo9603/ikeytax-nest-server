@@ -10,6 +10,7 @@ import {
   UpdateLocationResponse,
   LocationWithOrderId,
   GetDriverLocationResponse,
+  LogoutResponse,
 } from '@/graphql';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -65,6 +66,14 @@ export class UserResolver {
       httpOnly: true,
       maxAge: EXPIRED,
     });
+    return { result: 'success' };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => LogoutResponse)
+  async logout(@CurrentUser() user, @Context() { res }: { res: Response }) {
+    await this.authService.logout(user.id);
+    res.clearCookie(process.env.JWT_HEADER);
     return { result: 'success' };
   }
 

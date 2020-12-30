@@ -9,7 +9,7 @@
 - [x] getDriverLocation
 - [x] getUserWithOrder
 - [x] signin
-- [ ] logout
+- [x] logout
 - [x] signupDriver
 - [x] signupUser
 - [x] subLocation
