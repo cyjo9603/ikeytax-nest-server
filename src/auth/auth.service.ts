@@ -30,4 +30,8 @@ export class AuthService {
     await this.userModel.updateOne({ _id: user.id }, { refreshToken });
     return { accessToken };
   }
+
+  async logout(userId: string) {
+    await this.userModel.findByIdAndUpdate(userId, { refreshToken: null });
+  }
 }
