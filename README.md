@@ -24,7 +24,7 @@
 - [x] getCompletedOrder
 - [x] getOrder
 - [x] getOrderById
-- [ ] getOrderCarInfo
+- [x] getOrderCarInfo
 - [x] getUnassignedOrders
 - [ ] startDriving
 - [x] subNewOrder
