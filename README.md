@@ -19,7 +19,7 @@
 
 - [x] approvalOrder
 - [x] cancelOrder
-- [ ] completeOrder
+- [x] completeOrder
 - [x] createOrder
 - [ ] getCompletedOrder
 - [ ] getOrder
