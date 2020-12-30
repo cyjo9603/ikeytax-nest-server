@@ -64,4 +64,12 @@ export class OrderService {
   async updateStatus(orderId: string, status: OrderStatus, driverId?) {
     await this.orderModel.findByIdAndUpdate(orderId, { driver: driverId, status });
   }
+
+  async completeOrder(orderId: string, amount: number) {
+    await this.orderModel.findByIdAndUpdate(orderId, {
+      status: OrderStatus.close,
+      amount,
+      completedAt: new Date(),
+    });
+  }
 }
