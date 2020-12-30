@@ -9,6 +9,7 @@ import {
   SigninResponse,
   UpdateLocationResponse,
   LocationWithOrderId,
+  GetDriverLocationResponse,
 } from '@/graphql';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -74,6 +75,14 @@ export class UserResolver {
     const order = await this.orderService.findRecentlyOneForUser(user.id, user.type);
 
     return { result: 'success', user: _user, order };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => GetDriverLocationResponse)
+  async getDriverLocation(@Args('orderId') orderId: string) {
+    const driverLocation = await this.orderService.findDriverLocation(orderId);
+
+    return { result: 'success', driverLocation };
   }
 
   @UseGuards(JwtAuthGuard)

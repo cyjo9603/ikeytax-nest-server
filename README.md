@@ -6,7 +6,7 @@
 
 #### user
 
-- [ ] getDriverLocation
+- [x] getDriverLocation
 - [x] getUserWithOrder
 - [x] signin
 - [ ] logout
