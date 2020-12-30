@@ -115,4 +115,11 @@ export class OrderService {
 
     return order?.get('driver.driver.car');
   }
+
+  async startDriving(orderId: string) {
+    await this.orderModel.findByIdAndUpdate(orderId, {
+      status: OrderStatus.startedDrive,
+      startedAt: new Date(),
+    });
+  }
 }
