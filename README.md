@@ -22,7 +22,7 @@
 - [x] completeOrder
 - [x] createOrder
 - [x] getCompletedOrder
-- [ ] getOrder
+- [x] getOrder
 - [ ] getOrderById
 - [ ] getOrderCarInfo
 - [x] getUnassignedOrders
