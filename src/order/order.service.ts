@@ -107,4 +107,12 @@ export class OrderService {
     const order = await this.orderModel.findById(orderId);
     return order;
   }
+
+  async findCarInfo(orderId: string, userId) {
+    const order = await this.orderModel
+      .findOne({ _id: orderId, user: userId }, 'driver')
+      .populate('driver');
+
+    return order?.get('driver.driver.car');
+  }
 }
