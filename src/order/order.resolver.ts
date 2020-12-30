@@ -102,7 +102,7 @@ export class OrderResolver {
   @UseGuards(JwtAuthGuard)
   @Mutation((returns) => ApprovalOrderResponse)
   async approvalOrder(@CurrentUser() user, @Args('orderId') orderId: string) {
-    await this.orderService.updateStatus(orderId, user.id, OrderStatus.approval);
+    await this.orderService.updateStatus(orderId, OrderStatus.approval, user.id);
 
     this.pubsub.publish(ORDER_CALL_STATUS, {
       subOrderCallStatus: { orderId, status: OrderStatus.approval },
