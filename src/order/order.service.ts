@@ -102,4 +102,9 @@ export class OrderService {
     });
     return order;
   }
+
+  async findById(orderId: string) {
+    const order = await this.orderModel.findById(orderId);
+    return order;
+  }
 }
