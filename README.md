@@ -23,7 +23,7 @@
 - [x] createOrder
 - [x] getCompletedOrder
 - [x] getOrder
-- [ ] getOrderById
+- [x] getOrderById
 - [ ] getOrderCarInfo
 - [x] getUnassignedOrders
 - [ ] startDriving
