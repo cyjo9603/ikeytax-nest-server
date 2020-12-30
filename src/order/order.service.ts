@@ -83,4 +83,14 @@ export class OrderService {
 
     return completedOrders;
   }
+
+  async findApprovalDriverOrder(driverId) {
+    const approvalDriverOrder = await this.orderModel
+      .findOne({ driver: driverId })
+      .or([{ status: OrderStatus.approval }, { status: OrderStatus.startedDrive }])
+      .sort({ createdAt: -1 })
+      .limit(1);
+
+    return approvalDriverOrder;
+  }
 }

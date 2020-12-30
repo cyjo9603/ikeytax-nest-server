@@ -85,8 +85,13 @@ export class UserResolver {
   ) {
     await this.userService.updateLocation(user.id, { coordinates: [lat, lng] });
     this.pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
+    const approvalOrder = await this.orderService.findApprovalDriverOrder(user.id);
 
-    // TODO: approval order -> sub location
+    if (approvalOrder) {
+      this.pubsub.publish(UPDATE_DRIVER_LOCATION, {
+        subDriverLocation: { coordinates: [lat, lng], orderId: approvalOrder._id },
+      });
+    }
 
     return { result: 'success' };
   }
