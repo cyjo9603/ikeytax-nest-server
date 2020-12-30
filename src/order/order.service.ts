@@ -72,4 +72,15 @@ export class OrderService {
       completedAt: new Date(),
     });
   }
+
+  async findCompleted(user) {
+    const completedOrders = await this.orderModel
+      .find({
+        [user.type]: user.id,
+        status: OrderStatus.close,
+      })
+      .sort({ completedAt: -1 });
+
+    return completedOrders;
+  }
 }
