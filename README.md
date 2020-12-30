@@ -26,7 +26,7 @@
 - [x] getOrderById
 - [x] getOrderCarInfo
 - [x] getUnassignedOrders
-- [ ] startDriving
+- [x] startDriving
 - [x] subNewOrder
 - [x] subOrderCallStatus
 - [x] updateOrderList

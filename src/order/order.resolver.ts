@@ -18,6 +18,7 @@ import {
   GetOrderResponse,
   GetOrderByIdResponse,
   GetOrderCarInfoResponse,
+  StartDrivingResponse,
 } from '@/graphql';
 import { UserService } from '@user/user.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -100,6 +101,18 @@ export class OrderResolver {
   async cancelOrder(@CurrentUser() user, @Args('orderId') orderId: string) {
     await this.orderService.delete(orderId, user.id);
     this.pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
+
+    return { result: 'success' };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation((returns) => StartDrivingResponse)
+  async startDriving(@Args('orderId') orderId: string) {
+    await this.orderService.startDriving(orderId);
+
+    this.pubsub.publish(ORDER_CALL_STATUS, {
+      subOrderCallStatus: { orderId, status: OrderStatus.startedDrive },
+    });
 
     return { result: 'success' };
   }
