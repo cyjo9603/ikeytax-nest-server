@@ -21,7 +21,7 @@
 - [x] cancelOrder
 - [x] completeOrder
 - [x] createOrder
-- [ ] getCompletedOrder
+- [x] getCompletedOrder
 - [ ] getOrder
 - [ ] getOrderById
 - [ ] getOrderCarInfo

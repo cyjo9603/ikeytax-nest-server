@@ -14,6 +14,7 @@ import {
   ApprovalOrderResponse,
   OrderStatus,
   CompleteOrderResponse,
+  GetCompletedOrdersResponse,
 } from '@/graphql';
 import { UserService } from '@user/user.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -42,6 +43,13 @@ export class OrderResolver {
     const userLocation = await this.userService.getLocation(user.id);
     const unassignedOrders = await this.orderService.findUnassiendOrders(userLocation);
     return { result: 'success', unassignedOrders };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query((returns) => GetCompletedOrdersResponse)
+  async getCompletedOrders(@CurrentUser() user) {
+    const completedOrders = await this.orderService.findCompleted(user);
+    return { result: 'success', completedOrders };
   }
 
   @UseGuards(JwtAuthGuard)
