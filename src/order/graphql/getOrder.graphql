@@ -1,0 +1,9 @@
+type GetOrderResponse {
+  result: String!
+  order: Order
+  error: String
+}
+
+type Query {
+  getOrderInfo(orderId: String!): GetOrderResponse!
+}
