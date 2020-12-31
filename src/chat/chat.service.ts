@@ -12,4 +12,10 @@ export class ChatService {
     const order = await this.orderModel.findById(orderId, 'chat');
     return order?.get('chat');
   }
+
+  async add(writer: string, chatId: string, content: string) {
+    await this.orderModel.findByIdAndUpdate(chatId, {
+      $push: { chat: { writer, content, createdAt: Date.now() } },
+    });
+  }
 }
