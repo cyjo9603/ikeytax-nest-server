@@ -2,10 +2,14 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 import { User, UserDocument, UserType } from '@models/user.model';
 import { UserService } from '@user/user.service';
 import { isComparedPassword } from '@utils/bcrypt';
+
+import { jwtConstants } from './constants';
+import { TokenPayload } from './strategies/expried-jwt.strategy';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +33,13 @@ export class AuthService {
 
     await this.userModel.updateOne({ _id: user.id }, { refreshToken });
     return { accessToken };
+  }
+
+  async getRefreshTokenPayload(userId: string) {
+    const user = await this.userModel.findById(userId);
+    const refreshToken: string = user?.get('refreshToken');
+    const refreshTokenPayload = jwt.verify(refreshToken, jwtConstants.secret) as TokenPayload;
+    return { id: refreshTokenPayload.id, type: refreshTokenPayload.type };
   }
 
   async logout(userId: string) {
