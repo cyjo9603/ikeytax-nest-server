@@ -33,7 +33,7 @@
 
 #### token
 
-- [ ] requestToken
+- [x] requestToken
 
 #### chat
 
