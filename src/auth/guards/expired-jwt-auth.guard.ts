@@ -11,7 +11,7 @@ export class ExpiredJwtAuthGuard extends AuthGuard('expried-jwt') {
   getRequest(context: ExecutionContext) {
     const gqlCtx = GqlExecutionContext.create(context);
     const ctx = gqlCtx.getContext();
-    const authCookie = ctx.req.cookies[process.env.JWT_HEADER];
+    const authCookie = ctx.req?.cookies[process.env.JWT_HEADER];
 
     if (authCookie) {
       ctx.req.headers.authorization = `Bearer ${authCookie}`;

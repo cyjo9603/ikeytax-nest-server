@@ -6,7 +6,6 @@ import { UseGuards, Inject } from '@nestjs/common';
 import { PUB_SUB, NEW_CHAT } from '@configs/config.constants';
 import { CurrentUser } from '@user/decorators/currentUser';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
-import { ExpiredJwtAuthGuard } from '@/auth/guards/expired-jwt-auth.guard';
 import { ChatService } from './chat.service';
 
 @Resolver()
@@ -35,7 +34,6 @@ export class ChatResolver {
     return { result: 'success', chat };
   }
 
-  @UseGuards(ExpiredJwtAuthGuard)
   @Subscription(() => CreateChatResponse, {
     filter: (payload, variables) => {
       return payload.subChat.orderId === variables.orderId;
