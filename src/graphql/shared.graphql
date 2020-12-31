@@ -14,9 +14,3 @@ input LocationInfo {
   address: String!
   coordinates: [Float!]!
 }
-
-type Chat {
-  createdAt: String
-  writer: String!
-  content: String!
-}
