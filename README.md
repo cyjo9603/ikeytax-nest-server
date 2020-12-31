@@ -37,6 +37,6 @@
 
 #### chat
 
-- [ ] createChat
-- [ ] getChat
+- [x] createChat
+- [x] getChat
 - [ ] subChat
