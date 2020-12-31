@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 import { CreateChatResponse, GetChatResponse } from '@/graphql';
 import { UseGuards, Inject } from '@nestjs/common';
@@ -6,6 +6,7 @@ import { UseGuards, Inject } from '@nestjs/common';
 import { PUB_SUB, NEW_CHAT } from '@configs/config.constants';
 import { CurrentUser } from '@user/decorators/currentUser';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { ExpiredJwtAuthGuard } from '@/auth/guards/expired-jwt-auth.guard';
 import { ChatService } from './chat.service';
 
 @Resolver()
@@ -32,5 +33,15 @@ export class ChatResolver {
     this.pubsub.publish(NEW_CHAT, { subChat: { result: 'success', chat, orderId } });
 
     return { result: 'success', chat };
+  }
+
+  @UseGuards(ExpiredJwtAuthGuard)
+  @Subscription(() => CreateChatResponse, {
+    filter: (payload, variables) => {
+      return payload.subChat.orderId === variables.orderId;
+    },
+  })
+  subChat() {
+    return this.pubsub.asyncIterator(NEW_CHAT);
   }
 }

@@ -39,4 +39,4 @@
 
 - [x] createChat
 - [x] getChat
-- [ ] subChat
+- [x] subChat
