@@ -31,7 +31,7 @@ const prod = process.env.NODE_ENV === 'production';
       },
       cors: {
         credentials: true,
-        origin: prod ? /ikeytax\.tk$/ : 'http://localhost:3000',
+        origin: prod ? /chanyeong\.com$/ : 'http://localhost:3000',
       },
       context: (ctx) => ({ ...ctx }),
     }),
