@@ -19,6 +19,7 @@ import {
   GetOrderByIdResponse,
   GetOrderCarInfoResponse,
   StartDrivingResponse,
+  OrderCallStatus,
 } from '@/graphql';
 import { UserService } from '@user/user.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -111,7 +112,7 @@ export class OrderResolver {
     await this.orderService.startDriving(orderId);
 
     this.pubsub.publish(ORDER_CALL_STATUS, {
-      subOrderCallStatus: { orderId, status: OrderStatus.startedDrive },
+      subOrderCallStatus: { orderId, status: OrderCallStatus.startedDrive },
     });
 
     return { result: 'success' };
@@ -122,7 +123,7 @@ export class OrderResolver {
   async completeOrder(@Args('orderId') orderId: string, @Args('amount') amount: number) {
     await this.orderService.completeOrder(orderId, amount);
     this.pubsub.publish(ORDER_CALL_STATUS, {
-      subOrderCallStatus: { orderId, status: OrderStatus.close },
+      subOrderCallStatus: { orderId, status: OrderCallStatus.completedDrive },
     });
 
     return { result: 'success' };
