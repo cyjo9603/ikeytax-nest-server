@@ -54,7 +54,13 @@ export class UserResolver {
 
   @UseGuards(LocalAuthGuard)
   @Mutation(() => CoreOutput)
-  async signin(@CurrentUser() user, @Context() { res }: { res: Response }) {
+  async signin(
+    @Args('email') email: string,
+    @Args('password') password: string,
+    @Args('loginType') loginType: string,
+    @CurrentUser() user,
+    @Context() { res }: { res: Response },
+  ) {
     const { accessToken } = await this.authService.login(user);
     res.cookie(process.env.JWT_HEADER, accessToken, {
       httpOnly: true,
