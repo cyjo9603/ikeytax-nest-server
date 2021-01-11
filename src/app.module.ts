@@ -29,6 +29,7 @@ const prod = process.env.NODE_ENV === 'production';
         path: join(process.cwd(), 'src/graphql.ts'),
         outputAs: 'class',
       },
+      autoSchemaFile: true,
       cors: {
         credentials: true,
         origin: prod ? /chanyeong\.com$/ : 'http://localhost:3000',
