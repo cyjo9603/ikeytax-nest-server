@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Field, InputType, ObjectType, registerEnumType, Int } from '@nestjs/graphql';
 import { Document, Types } from 'mongoose';
 import { Payment } from './payment.model';
 import { Location } from './location.model';
@@ -12,38 +13,52 @@ enum OrderStatus {
   close = 'close',
 }
 
+registerEnumType(OrderStatus, { name: 'OrderStatus' });
+
+@InputType('OrderInputType', { isAbstract: true })
+@ObjectType()
 @Schema({ timestamps: true })
 export class Order {
+  @Field((type) => String)
   @Prop({ required: true, type: Types.ObjectId })
-  user: User;
+  user: Types.ObjectId;
 
+  @Field((type) => String, { nullable: true })
   @Prop({ ref: 'User', type: Types.ObjectId })
-  driver: User;
+  driver: Types.ObjectId;
 
+  @Field((type) => Int, { nullable: true })
   @Prop()
   amount?: number;
 
+  @Field((type) => Payment, { nullable: true })
   @Prop()
   payment?: Payment;
 
+  @Field((type) => Location)
   @Prop({ required: true })
   startingPoint: Location;
 
+  @Field((type) => Location)
   @Prop({ required: true })
   destination: Location;
 
+  @Field((type) => OrderStatus)
   @Prop({
     required: true,
     enum: [OrderStatus.approval, OrderStatus.close, OrderStatus.startedDrive, OrderStatus.waiting],
   })
   status: OrderStatus;
 
+  @Field((type) => [Chat])
   @Prop()
   chat: Chat[];
 
+  @Field((type) => Date, { nullable: true })
   @Prop()
   startedAt?: Date;
 
+  @Field((type) => Date, { nullable: true })
   @Prop()
   completedAt?: Date;
 }
