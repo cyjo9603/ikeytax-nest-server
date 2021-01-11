@@ -10,15 +10,11 @@ import {
   UpdateOrderListResponse,
   GetUnassignedOrdersResponse,
   SubOrderCallStatusResponse,
-  CancelOrderResponse,
-  ApprovalOrderResponse,
   OrderStatus,
-  CompleteOrderResponse,
   GetCompletedOrdersResponse,
   GetOrderResponse,
   GetOrderByIdResponse,
   GetOrderCarInfoResponse,
-  StartDrivingResponse,
   OrderCallStatus,
 } from '@/graphql';
 import { UserService } from '@user/user.service';
@@ -30,6 +26,7 @@ import {
   ORDER_CALL_STATUS,
 } from '@configs/config.constants';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
+import { CoreOutput } from '@/graphql/output.dto';
 import { OrderService } from './order.service';
 
 const POSSIBLE_DISTANCE = 10000;
@@ -98,7 +95,7 @@ export class OrderResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => CancelOrderResponse)
+  @Mutation((returns) => CoreOutput)
   async cancelOrder(@CurrentUser() user, @Args('orderId') orderId: string) {
     await this.orderService.delete(orderId, user.id);
     this.pubsub.publish(UPDATE_ORDER_LIST, { updateOrderList: { result: 'success' } });
@@ -107,7 +104,7 @@ export class OrderResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => StartDrivingResponse)
+  @Mutation((returns) => CoreOutput)
   async startDriving(@Args('orderId') orderId: string) {
     await this.orderService.startDriving(orderId);
 
@@ -119,7 +116,7 @@ export class OrderResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => CompleteOrderResponse)
+  @Mutation((returns) => CoreOutput)
   async completeOrder(@Args('orderId') orderId: string, @Args('amount') amount: number) {
     await this.orderService.completeOrder(orderId, amount);
     this.pubsub.publish(ORDER_CALL_STATUS, {
@@ -130,7 +127,7 @@ export class OrderResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation((returns) => ApprovalOrderResponse)
+  @Mutation((returns) => CoreOutput)
   async approvalOrder(@CurrentUser() user, @Args('orderId') orderId: string) {
     await this.orderService.updateStatus(orderId, OrderStatus.approval, user.id);
 
