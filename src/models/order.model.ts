@@ -7,7 +7,7 @@ import { Location } from './location.model';
 import { Chat } from './chat.model';
 import { User } from './user.model';
 
-enum OrderStatus {
+export enum OrderStatus {
   waiting = 'waiting',
   approval = 'approval',
   startedDrive = 'startedDrive',

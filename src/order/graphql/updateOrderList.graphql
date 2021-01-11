@@ -1,7 +1,0 @@
-type UpdateOrderListResponse {
-  result: String!
-}
-
-type Subscription {
-  updateOrderList: UpdateOrderListResponse!
-}

@@ -1,8 +1,0 @@
-type StartDrivingResponse {
-  result: String!
-  error: String
-}
-
-type Mutation {
-  startDriving(orderId: String!): StartDrivingResponse
-}

@@ -1,9 +1,0 @@
-type GetOrderCarInfoResponse {
-  result: String!
-  carInfo: Car
-  error: String
-}
-
-type Query {
-  getOrderCarInfo(orderId: String!): GetOrderCarInfoResponse!
-}

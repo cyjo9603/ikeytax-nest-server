@@ -1,7 +1,0 @@
-type SubNewOrderResponse {
-  newOrder: Order
-}
-
-type Subscription {
-  subNewOrder(lat: Float!, lng: Float!): SubNewOrderResponse!
-}

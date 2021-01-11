@@ -1,9 +1,0 @@
-type GetOrderByIdResponse {
-  result: String!
-  order: Order
-  error: String
-}
-
-type Query {
-  getOrderById(orderId: String!): GetOrderByIdResponse!
-}

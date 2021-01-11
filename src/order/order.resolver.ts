@@ -3,20 +3,6 @@ import { Args, Mutation, Resolver, Subscription, Query } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
 import { CurrentUser } from '@user/decorators/currentUser';
-import {
-  LocationInfo,
-  CreateOrderResponse,
-  SubNewOrderResponse,
-  UpdateOrderListResponse,
-  GetUnassignedOrdersResponse,
-  SubOrderCallStatusResponse,
-  OrderStatus,
-  GetCompletedOrdersResponse,
-  GetOrderResponse,
-  GetOrderByIdResponse,
-  GetOrderCarInfoResponse,
-  OrderCallStatus,
-} from '@/graphql';
 import { UserService } from '@user/user.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import {
@@ -25,9 +11,22 @@ import {
   UPDATE_ORDER_LIST,
   ORDER_CALL_STATUS,
 } from '@configs/config.constants';
+import { Location } from '@models/location.model';
+import { OrderStatus } from '@models/order.model';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
 import { CoreOutput } from '@/graphql/output.dto';
 import { OrderService } from './order.service';
+import {
+  GetUnassignedOrdersResponse,
+  GetCompletedOrdersResponse,
+  GetOrderCarInfoResponse,
+  GetOrderResponse,
+  CreateOrderResponse,
+  SubNewOrderResponse,
+  UpdateOrderListResponse,
+  SubOrderCallStatusResponse,
+  OrderCallStatus,
+} from './dtos';
 
 const POSSIBLE_DISTANCE = 10000;
 
@@ -69,7 +68,7 @@ export class OrderResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query((returns) => GetOrderByIdResponse)
+  @Query((returns) => GetOrderResponse)
   async getOrderById(@Args('orderId') orderId: string) {
     const order = await this.orderService.findById(orderId);
     return { result: 'success', order };
@@ -79,8 +78,8 @@ export class OrderResolver {
   @Mutation((returns) => CreateOrderResponse)
   async createOrder(
     @CurrentUser() user,
-    @Args('startingPoint') startingPoint: LocationInfo,
-    @Args('destination') destination: LocationInfo,
+    @Args('startingPoint') startingPoint: Location,
+    @Args('destination') destination: Location,
   ) {
     const userPayment = await this.userService.getPayment(user.id);
     const createdOrder = await this.orderService.create(

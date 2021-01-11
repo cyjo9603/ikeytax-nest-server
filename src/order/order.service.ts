@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Order, OrderDocument } from '@models/order.model';
+import { Location } from '@models/location.model';
 import { UserType } from '@models/user.model';
 import { OrderStatus, LocationInfo, Payment } from '@/graphql';
 
@@ -44,8 +45,8 @@ export class OrderService {
   async create(
     user: string,
     payment: Payment,
-    startingPoint: LocationInfo,
-    destination: LocationInfo,
+    startingPoint: Location,
+    destination: Location,
   ): Promise<OrderDocument> {
     const order = new this.orderModel({
       user,

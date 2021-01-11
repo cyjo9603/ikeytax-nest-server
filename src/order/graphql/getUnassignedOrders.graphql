@@ -1,9 +1,0 @@
-type GetUnassignedOrdersResponse {
-  result: String!
-  unassignedOrders: [Order!]
-  error: String
-}
-
-type Query {
-  getUnassignedOrders: GetUnassignedOrdersResponse!
-}
