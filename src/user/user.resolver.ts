@@ -3,14 +3,9 @@ import { Args, Mutation, Resolver, Context, Query, Subscription } from '@nestjs/
 import { PubSub } from 'apollo-server-express';
 
 import {
-  SignupResponse,
-  PaymentInfo,
-  DriverInfo,
-  SigninResponse,
-  UpdateLocationResponse,
   LocationWithOrderId,
   GetDriverLocationResponse,
-  LogoutResponse,
+  GetUserWithOrderResponse,
 } from '@/graphql';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -18,6 +13,9 @@ import { AuthService } from '@/auth/auth.service';
 import { Response } from 'express';
 import { OrderService } from '@/order/order.service';
 import { PUB_SUB, UPDATE_ORDER_LIST, UPDATE_DRIVER_LOCATION } from '@configs/config.constants';
+import { CoreOutput } from '@/graphql/output.dto';
+import { Payment } from '@models/payment.model';
+import { Driver } from '@models/driver.model';
 import { CurrentUser } from './decorators/currentUser';
 import { UserService } from './user.service';
 
@@ -32,26 +30,26 @@ export class UserResolver {
     @Inject(PUB_SUB) private readonly pubsub: PubSub,
   ) {}
 
-  @Mutation((returns) => SignupResponse)
+  @Mutation((returns) => CoreOutput)
   async signupUser(
     @Args('name') name: string,
     @Args('email') email: string,
     @Args('password') password: string,
     @Args('phone') phone: string,
-    @Args('payment') payment: PaymentInfo,
+    @Args('payment') payment: Payment,
   ) {
     await this.userService.createUser(name, email, password, phone, payment);
 
     return { result: 'success' };
   }
 
-  @Mutation((returns) => SignupResponse)
+  @Mutation((returns) => CoreOutput)
   async signupDriver(
     @Args('name') name: string,
     @Args('email') email: string,
     @Args('password') password: string,
     @Args('phone') phone: string,
-    @Args('driver') driver: DriverInfo,
+    @Args('driver') driver: Driver,
   ) {
     await this.userService.createDriver(name, email, password, phone, driver);
 
@@ -59,7 +57,7 @@ export class UserResolver {
   }
 
   @UseGuards(LocalAuthGuard)
-  @Mutation(() => SigninResponse)
+  @Mutation(() => CoreOutput)
   async signin(@CurrentUser() user, @Context() { res }: { res: Response }) {
     const { accessToken } = await this.authService.login(user);
     res.cookie(process.env.JWT_HEADER, accessToken, {
@@ -70,7 +68,7 @@ export class UserResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation(() => LogoutResponse)
+  @Mutation(() => CoreOutput)
   async logout(@CurrentUser() user, @Context() { res }: { res: Response }) {
     await this.authService.logout(user.id);
     res.clearCookie(process.env.JWT_HEADER);
@@ -78,7 +76,7 @@ export class UserResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Query('getUserWithOrder')
+  @Query(() => GetUserWithOrderResponse)
   async getUserWithOrder(@CurrentUser() user) {
     const _user = await this.userService.findOneById(user.id);
     const order = await this.orderService.findRecentlyOneForUser(user.id, user.type);
@@ -95,7 +93,7 @@ export class UserResolver {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Mutation(() => UpdateLocationResponse)
+  @Mutation(() => CoreOutput)
   async updateDriverLocation(
     @CurrentUser() user,
     @Args('lat') lat: number,
