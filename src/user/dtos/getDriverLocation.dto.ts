@@ -1,8 +1,8 @@
-import { Field, ObjectType, InputType, Float } from '@nestjs/graphql';
+import { Field, ObjectType, Float } from '@nestjs/graphql';
 
 import { CoreOutput } from '@/graphql/output.dto';
 
-@InputType()
+@ObjectType()
 export class DriverLocation {
   @Field((type) => Float)
   lat: number;

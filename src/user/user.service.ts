@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 
 import { User, UserDocument, UserType } from '@models/user.model';
 import { Driver } from '@models/driver.model';
-import { DriverInfo, PaymentInfo } from '@/graphql';
 import { encryptPassword } from '@utils/bcrypt';
 import { Payment } from '@models/payment.model';
 import { Location } from '@models/location.model';
@@ -18,7 +17,7 @@ export class UserService {
     email: string,
     password: string,
     phone: string,
-    payment: PaymentInfo,
+    payment: Payment,
   ): Promise<User> {
     const createdUser = new this.userModel({
       name,

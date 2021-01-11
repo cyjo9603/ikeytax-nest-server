@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { Order, OrderDocument } from '@models/order.model';
+import { Order, OrderDocument, OrderStatus } from '@models/order.model';
 import { Location } from '@models/location.model';
 import { UserType } from '@models/user.model';
-import { OrderStatus, LocationInfo, Payment } from '@/graphql';
+import { Payment } from '@models/payment.model';
 
 const EARTH_RADIUS = 6378.1; // 지구 반지름
 const SEARCHING_KM = 10; // 검색 범위 (KM)
