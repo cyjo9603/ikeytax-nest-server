@@ -1,8 +1,0 @@
-type RequestTokenResponse {
-  result: String!
-  message: String
-}
-
-type Mutation {
-  requestToken: RequestTokenResponse!
-}

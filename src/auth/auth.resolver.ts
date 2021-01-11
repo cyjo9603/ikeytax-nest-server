@@ -1,11 +1,11 @@
 import { Context, Mutation, Resolver } from '@nestjs/graphql';
 import { Response } from 'express';
 import { UseGuards } from '@nestjs/common';
-import { RequestTokenResponse } from '@/graphql';
 import { CurrentUser } from '@user/decorators/currentUser';
 
 import { AuthService } from './auth.service';
 import { ExpiredJwtAuthGuard } from './guards/expired-jwt-auth.guard';
+import { RequestTokenResponse } from './dtos';
 
 const EXPIRED = 1000 * 60 * 60 * 24 * 14;
 
