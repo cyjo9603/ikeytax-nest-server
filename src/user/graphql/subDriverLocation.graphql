@@ -1,8 +1,0 @@
-type LocationWithOrderId {
-  coordinates: [Float]!
-  orderId: String!
-}
-
-type Subscription {
-  subDriverLocation(orderId: String!): LocationWithOrderId!
-}

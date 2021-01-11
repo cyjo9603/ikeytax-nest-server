@@ -1,8 +1,0 @@
-type LogoutResponse {
-  result: String!
-  error: String
-}
-
-type Mutation {
-  logout: LogoutResponse!
-}

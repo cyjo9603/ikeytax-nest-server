@@ -25,5 +25,6 @@ module.exports = {
     'new-cap': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/extensions': 'off',
+    'max-classes-per-file': 'off',
   },
 };

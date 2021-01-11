@@ -2,11 +2,6 @@ import { forwardRef, Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver, Context, Query, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
-import {
-  LocationWithOrderId,
-  GetDriverLocationResponse,
-  GetUserWithOrderResponse,
-} from '@/graphql';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { AuthService } from '@/auth/auth.service';
@@ -18,6 +13,7 @@ import { Payment } from '@models/payment.model';
 import { Driver } from '@models/driver.model';
 import { CurrentUser } from './decorators/currentUser';
 import { UserService } from './user.service';
+import { GetUserWithOrderResponse, GetDriverLocationResponse, LocationWithOrderId } from './dtos';
 
 const EXPIRED = 1000 * 60 * 60 * 24 * 14;
 
