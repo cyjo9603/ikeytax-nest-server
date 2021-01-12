@@ -1,5 +1,5 @@
 import { Inject, forwardRef, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver, Subscription, Query } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Subscription, Query, Int } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
 import { CurrentUser } from '@user/decorators/currentUser';
@@ -116,7 +116,10 @@ export class OrderResolver {
 
   @UseGuards(JwtAuthGuard)
   @Mutation((returns) => CoreOutput)
-  async completeOrder(@Args('orderId') orderId: string, @Args('amount') amount: number) {
+  async completeOrder(
+    @Args('orderId') orderId: string,
+    @Args('amount', { type: () => Int }) amount: number,
+  ) {
     await this.orderService.completeOrder(orderId, amount);
     this.pubsub.publish(ORDER_CALL_STATUS, {
       subOrderCallStatus: { orderId, status: OrderCallStatus.completedDrive },
@@ -150,11 +153,11 @@ export class OrderResolver {
       return calcLocationDistance(newOrderStartingPoint, variables) <= POSSIBLE_DISTANCE;
     },
   })
-  subNewOrder() {
+  subNewOrder(@Args('lat') lat: number, @Args('lng') lng: number) {
     return this.pubsub.asyncIterator(CREATE_NEW_ORDER);
   }
 
-  @Subscription((returns) => UpdateOrderListResponse)
+  @Subscription((returns) => UpdateOrderListResponse, { name: UPDATE_ORDER_LIST })
   updateOrderList() {
     return this.pubsub.asyncIterator(UPDATE_ORDER_LIST);
   }
@@ -164,7 +167,7 @@ export class OrderResolver {
       return payload.subOrderCallStatus.orderId === variables.orderId;
     },
   })
-  subOrderCallStatus() {
+  subOrderCallStatus(@Args('orderId') orderId: string) {
     return this.pubsub.asyncIterator(ORDER_CALL_STATUS);
   }
 }

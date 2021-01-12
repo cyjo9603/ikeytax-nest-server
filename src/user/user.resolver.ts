@@ -107,7 +107,7 @@ export class UserResolver {
 
     if (approvalOrder) {
       this.pubsub.publish(UPDATE_DRIVER_LOCATION, {
-        subDriverLocation: { coordinates: [lat, lng], orderId: approvalOrder._id },
+        subDriverLocation: { coordinates: [lat, lng], orderId: String(approvalOrder._id) },
       });
     }
 
@@ -119,7 +119,7 @@ export class UserResolver {
       return payload.subDriverLocation.orderId === variables.orderId;
     },
   })
-  subDriverLocation() {
+  subDriverLocation(@Args('orderId') orderId: string) {
     return this.pubsub.asyncIterator(UPDATE_DRIVER_LOCATION);
   }
 }

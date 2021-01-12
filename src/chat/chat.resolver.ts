@@ -39,7 +39,7 @@ export class ChatResolver {
       return payload.subChat.orderId === variables.orderId;
     },
   })
-  subChat() {
+  subChat(@Args('orderId') orderId: string) {
     return this.pubsub.asyncIterator(NEW_CHAT);
   }
 }
