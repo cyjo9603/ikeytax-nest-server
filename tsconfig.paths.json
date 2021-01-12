@@ -2,9 +2,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@configs/*": ["src/configs/*"],
-      "@models/*": ["src/models/*"],
+      "@order/*": ["src/order/*"],
       "@user/*": ["src/user/*"],
+      "@common/*": ["src/common/*"],
+      "@auth/*": ["src/auth/*"],
+      "@directives/*": ["src/directives/*"],
+      "@models/*": ["src/models/*"],
       "@utils/*": ["src/utils/*"],
       "@/*": ["src/*"]
     },
