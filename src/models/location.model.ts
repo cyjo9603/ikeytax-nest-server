@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, InputType, ObjectType } from '@nestjs/graphql';
 import { Document } from 'mongoose';
 
 @InputType('InputLocationType', { isAbstract: true })
@@ -10,7 +10,7 @@ export class Location {
   @Prop()
   address?: string;
 
-  @Field((type) => [Int])
+  @Field((type) => [Float])
   @Prop()
   coordinates?: [number, number];
 }
