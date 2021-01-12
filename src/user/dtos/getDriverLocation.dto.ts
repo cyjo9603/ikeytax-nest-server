@@ -1,6 +1,6 @@
 import { Field, ObjectType, Float } from '@nestjs/graphql';
 
-import { CoreOutput } from '@/graphql/output.dto';
+import { CoreOutput } from '@common/dtos/output.dto';
 
 @ObjectType()
 export class DriverLocation {

@@ -10,11 +10,11 @@ import {
   CREATE_NEW_ORDER,
   UPDATE_ORDER_LIST,
   ORDER_CALL_STATUS,
-} from '@configs/config.constants';
+} from '@common/common.constants';
 import { Location } from '@models/location.model';
 import { OrderStatus } from '@models/order.model';
 import { calcLocationDistance } from '@utils/calcLocationDistance';
-import { CoreOutput } from '@/graphql/output.dto';
+import { CoreOutput } from '@common/dtos/output.dto';
 import { OrderService } from './order.service';
 import {
   GetUnassignedOrdersResponse,

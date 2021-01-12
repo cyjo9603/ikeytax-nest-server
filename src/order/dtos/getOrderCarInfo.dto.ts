@@ -1,6 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 
-import { CoreOutput } from '@/graphql/output.dto';
+import { CoreOutput } from '@common/dtos/output.dto';
 import { Car } from '@models/car.model';
 
 @ObjectType()

@@ -1,7 +1,7 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 
 import { Chat } from '@models/chat.model';
-import { CoreOutput } from '@/graphql/output.dto';
+import { CoreOutput } from '@common/dtos/output.dto';
 
 @ObjectType()
 export class CreateChatResponse extends CoreOutput {

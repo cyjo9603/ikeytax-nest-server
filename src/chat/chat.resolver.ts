@@ -2,7 +2,7 @@ import { Resolver, Query, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 import { UseGuards, Inject } from '@nestjs/common';
 
-import { PUB_SUB, NEW_CHAT } from '@configs/config.constants';
+import { PUB_SUB, NEW_CHAT } from '@common/common.constants';
 import { CurrentUser } from '@user/decorators/currentUser';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { ChatService } from './chat.service';
