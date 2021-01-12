@@ -14,7 +14,7 @@ export class Chat {
   @Prop({ required: true })
   content: string;
 
-  @Field((type) => Date)
+  @Field((type) => Date, { nullable: true })
   @Prop({ default: Date.now() })
   createdAt?: number;
 }

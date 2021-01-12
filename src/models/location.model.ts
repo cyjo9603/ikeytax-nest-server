@@ -10,7 +10,7 @@ export class Location {
   @Prop()
   address?: string;
 
-  @Field((type) => [Float])
+  @Field((type) => [Float], { nullable: true })
   @Prop()
   coordinates?: [number, number];
 }
