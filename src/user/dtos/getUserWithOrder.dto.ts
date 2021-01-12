@@ -9,6 +9,6 @@ export class GetUserWithOrderResponse extends CoreOutput {
   @Field((type) => User)
   user: User;
 
-  @Field((type) => Order)
-  order: Order;
+  @Field((type) => Order, { nullable: true })
+  order?: Order;
 }

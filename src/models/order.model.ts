@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Field, InputType, ObjectType, registerEnumType, Int } from '@nestjs/graphql';
 import { Document, Types } from 'mongoose';
-import { Type } from '@nestjs/common';
 import { Payment } from './payment.model';
 import { Location } from './location.model';
 import { Chat } from './chat.model';

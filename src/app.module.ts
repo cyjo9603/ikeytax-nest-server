@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { join } from 'path';
 
 import { PubsubModule } from '@common/common.module';
 import { UserModule } from './user/user.module';
