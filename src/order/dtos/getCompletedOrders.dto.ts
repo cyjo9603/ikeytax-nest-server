@@ -6,5 +6,5 @@ import { Order } from '@models/order.model';
 @ObjectType()
 export class GetCompletedOrdersResponse extends CoreOutput {
   @Field(() => [Order])
-  getCompletedOrders: Order[];
+  completedOrders: Order[];
 }
