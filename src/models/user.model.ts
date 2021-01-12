@@ -18,6 +18,9 @@ registerEnumType(UserType, { name: 'UserType' });
 @Schema()
 export class User {
   @Field((type) => String)
+  _id: string;
+
+  @Field((type) => String)
   @Prop({ required: true, unique: true })
   email: string;
 
