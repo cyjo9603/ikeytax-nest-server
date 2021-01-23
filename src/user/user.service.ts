@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 
 import { User, UserDocument, UserType } from '@models/user.model';
 import { Driver } from '@models/driver.model';
-import { encryptPassword } from '@utils/bcrypt';
 import { Payment } from '@models/payment.model';
 import { Location } from '@models/location.model';
 
@@ -22,7 +21,7 @@ export class UserService {
     const createdUser = new this.userModel({
       name,
       email,
-      password: encryptPassword(password),
+      password,
       phone,
       payment,
       type: UserType.user,
@@ -35,7 +34,7 @@ export class UserService {
     const createDriver = new this.userModel({
       name,
       email,
-      password: encryptPassword(password),
+      password,
       phone,
       driver,
       type: UserType.driver,

@@ -18,7 +18,7 @@ export class Driver {
   @Prop({ required: true })
   licenseNumber: string;
 
-  @Field((type) => DriverStatus)
+  @Field((type) => DriverStatus, { nullable: true })
   @Prop({
     required: true,
     enum: [DriverStatus.waiting, DriverStatus.driving],
