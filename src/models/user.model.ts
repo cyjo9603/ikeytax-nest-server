@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import bcrypt from 'bcrypt';
 
 import { Payment } from './payment.model';
 import { Driver } from './driver.model';
@@ -17,6 +18,8 @@ registerEnumType(UserType, { name: 'UserType' });
 @ObjectType()
 @Schema()
 export class User {
+  static SALT_ROUND = 10;
+
   @Field((type) => String)
   _id: string;
 
@@ -59,8 +62,22 @@ export class User {
   @Field((type) => String, { nullable: true })
   @Prop()
   refreshToken?: string;
+
+  static async hash(password: string) {
+    const hashedPassword = await bcrypt.hash(password, User.SALT_ROUND);
+    return hashedPassword;
+  }
 }
 
-export type UserDocument = User & Document;
+interface UserSchemaMethod {
+  comparePassword: (password: string) => Promise<boolean>;
+}
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export type UserDocument = User & Document & UserSchemaMethod;
+
+export const UserSchema: MongooseSchema<UserSchemaMethod> = SchemaFactory.createForClass(User);
+
+UserSchema.methods.comparePassword = async function (password: string) {
+  const isCompared = await bcrypt.compare(password, this.password);
+  return isCompared;
+};

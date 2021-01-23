@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken';
 
 import { User, UserDocument, UserType } from '@models/user.model';
 import { UserService } from '@user/user.service';
-import { isComparedPassword } from '@utils/bcrypt';
 
 import { jwtConstants } from './constants';
 import { TokenPayload } from './strategies/expried-jwt.strategy';
@@ -21,7 +20,9 @@ export class AuthService {
 
   async validateUser(email: string, password: string, loginType: UserType) {
     const user = await this.userService.findOne(email, loginType);
-    if (!user || !isComparedPassword(password, user.password)) return null;
+    const isCompared = await user?.comparePassword(password);
+
+    if (!isCompared) return null;
 
     return { id: user._id, type: user.type };
   }
